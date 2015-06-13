@@ -68,36 +68,41 @@ def show_products():
 @app.route('/account')
 def account():
     error = None
-    username = request.args.get('username')
-    if username:
-        users = db.engine.execute("select username, password, email from user where username='{}'".format(username)).fetchall()
-        if users and session['username'] in [user.username for user in users]:
-            pass
-        else:
-            error = 'You can only view details for your own username!'
-    else:
-        users = None
+    users = None
+    try:
+        username = request.args.get('username')
+        if username:
+            users = db.engine.execute("select username, password, email from user where username='{}'".format(username)).fetchall()
+            if users and session['username'] in [user.username for user in users]:
+                pass
+            else:
+                error = 'You can only view details for your own username!'
+    except Exception as e:
+        error = e.message
     return render_template('account.html', users=users, error=error)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
-    if request.method == 'POST':
-        if request.form['username']:
-            users = User.query.filter_by(
-                    username=request.form['username']
-                )
-            if users:
-                if request.form['password'] and request.form['password'] == users.first().password:
-                    session['logged_in'] = True
-                    session['username'] = request.form['username']
-                    flash('You were logged in')
-                    return redirect(url_for('show_products'))
-                error = 'Invalid password'
-            else:
+    try:
+        if request.method == 'POST':
+            if request.form['username']:
+                users = User.query.filter_by(
+                        username=request.form['username']
+                    )
+                if users:
+                    if request.form['password'] and request.form['password'] == users.first().password:
+                        session['logged_in'] = True
+                        session['username'] = request.form['username']
+                        flash('You were logged in')
+                        return redirect(url_for('show_products'))
+                    error = 'Invalid password'
+                else:
+                    error = 'Invalid username'
+            else: 
                 error = 'Invalid username'
-        else: 
-            error = 'Invalid username'
+    except Exception as e:
+        error = e.message
     return render_template('login.html', error=error)
 
 @app.route('/logout')
