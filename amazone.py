@@ -68,7 +68,6 @@ def show_products():
 def account():
     error = None
     username = request.args.get('username')
-    import ipdb; ipdb.set_trace()
     if username:
         users = db.engine.execute("select username, password, email from user where username='{}'".format(username)).fetchall()
         if users and session['username'] in [user.username for user in users]:
