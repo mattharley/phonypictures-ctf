@@ -1,1 +1,1 @@
-web: python amazone.py --debug --verbose
+web: gunicorn 'amazone:app'

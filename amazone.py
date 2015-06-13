@@ -139,5 +139,5 @@ if __name__ == '__main__':
     args = parse_arguments()
     setup_logging(args.verbose)
     sync_db(db)
-    
-    app.run(debug=args.debug)
+
+    app.run(debug=True)
