@@ -138,8 +138,6 @@ def sync_db(db):
 if __name__ == '__main__':
     args = parse_arguments()
     setup_logging(args.verbose)
-
-    if args.syncdb:
-        sync_db(db)
-    else:
-        app.run(debug=args.debug)
+    sync_db(db)
+    
+    app.run(debug=args.debug)
