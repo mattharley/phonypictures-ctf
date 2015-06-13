@@ -66,33 +66,33 @@ def show_products():
 
 @app.route('/account')
 def account():
-    users = User.query.all()
-    result = ""
-    for user in users:
-        result += "{}\n".format(user.username)
-    return result
+    error = None
+    username = request.args.get('username')
+    import ipdb; ipdb.set_trace()
+    if username:
+        users = db.engine.execute("select username, password, email from user where username='{}'".format(username)).fetchall()
+        if users and session['username'] in [user.username for user in users]:
+            pass
+        else:
+            error = 'You can only view details for your own username!'
+    else:
+        users = None
+    return render_template('account.html', users=users, error=error)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
         if request.form['username']:
-            # users = User.query.filter_by(
-            #         username=request.form['username']
-            #     )
-            users = db.engine.execute("select username, password from user where username='{}'".format(request.form['username']))
-            import ipdb; ipdb.set_trace()
+            users = User.query.filter_by(
+                    username=request.form['username']
+                )
             if users:
                 if request.form['password'] and request.form['password'] == users.first().password:
                     session['logged_in'] = True
+                    session['username'] = request.form['username']
                     flash('You were logged in')
-                    products_list = Product.query.all()
-                    return render_template(
-                        'products.html', 
-                        error=error, 
-                        products=products_list, 
-                        users=users
-                    )
+                    return redirect(url_for('show_products'))
                 error = 'Invalid password'
             else:
                 error = 'Invalid username'
@@ -103,6 +103,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
+    session.pop('username', None)
     flash('You were logged out')
     return redirect(url_for('show_products'))
 

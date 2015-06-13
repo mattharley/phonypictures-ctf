@@ -15,12 +15,4 @@
     <div class=flash>{{ message }}</div>
   {% endfor %}
   {% block body %}{% endblock %}
-  <div class=footer>
-    {% if session.logged_in and users %}
-      <h1>Your account credentials (keep these private!)</h1>
-      {% for user in users %}
-        {{ user.email }}
-      {% endfor %}
-    {% endif %}
-  </div>
 </div>

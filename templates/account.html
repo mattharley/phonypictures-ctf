@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block body %}
+  <div>
+    {% if error %}
+    <p class=error><strong>Error:</strong> {{ error }}
+    {% elif session.logged_in and users %}
+        <h2>Your account credentials (keep these private!)</h2>
+        <ul>
+          {% for user in users %}
+          <li>
+            <ul>
+                <li>{{ user.username }}</li>
+                <li>{{ user.email }}</li>
+                <li>{{ user.password }}</li>
+            </ul>
+          </li>
+          {% endfor %}
+        </ul>
+    {% else %}
+        <form action="{{ url_for('account') }}" method=get>
+            <dl>
+                <dt>Please enter your username to retrieve account details:
+                <dd><input type=text name=username>
+                <dd><input type=submit value=Search>
+            </dl>
+        </form>
+    {% endif %}
+  </div>
+{% endblock %}
