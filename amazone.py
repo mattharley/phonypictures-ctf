@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///amazone.db'
 # set the secret key.  keep this really secret:
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+app.debug = True
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -135,9 +136,8 @@ def sync_db(db):
 
     db.session.commit()
 
-if __name__ == '__main__':
-    args = parse_arguments()
-    setup_logging(args.verbose)
-    sync_db(db)
+sync_db(db)
 
+if __name__ == '__main__':
     app.run(debug=True)
+
