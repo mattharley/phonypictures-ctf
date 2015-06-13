@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+  <ul class=entries>
+  {% for product in products %}
+    <li><h2>{{ product.name }} - {{ product.price }}</h2>{{ product.description|safe }}
+  {% else %}
+    <li><em>Unbelievable.  No products here so far</em>
+  {% endfor %}
+  </ul>
+{% endblock %}

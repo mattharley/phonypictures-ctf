@@ -1,13 +1,15 @@
 import argparse
 import logging
 
-from flask import Flask, g, jsonify, request
+from flask import Flask, flash, g, jsonify, redirect, render_template, request, session, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///amazone.db'
+# set the secret key.  keep this really secret:
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -54,8 +56,55 @@ product_list = [
     Product('Widget', 'This is the best widget', "$5"),
     Product('Thingy', 'Thingies are cool. Is it thingies or thingy\'s?', "$12"),
     Product('Whizz Bang', 'Peeeowww. Off into the sky.', "$5"),
-    Product('Adult Diapers', 'Peeeowww. Off into the sky.', "$5"),
+    Product('Adult Diapers', 'ON SPECIAL - for those that can\'t leave their computer', "$25"),
 ]
+
+@app.route('/')
+def show_products():
+    products_list = Product.query.all()
+    return render_template('products.html', products=products_list)
+
+@app.route('/account')
+def account():
+    users = User.query.all()
+    result = ""
+    for user in users:
+        result += "{}\n".format(user.username)
+    return result
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username']:
+            # users = User.query.filter_by(
+            #         username=request.form['username']
+            #     )
+            users = db.engine.execute("select username, password from user where username='{}'".format(request.form['username']))
+            import ipdb; ipdb.set_trace()
+            if users:
+                if request.form['password'] and request.form['password'] == users.first().password:
+                    session['logged_in'] = True
+                    flash('You were logged in')
+                    products_list = Product.query.all()
+                    return render_template(
+                        'products.html', 
+                        error=error, 
+                        products=products_list, 
+                        users=users
+                    )
+                error = 'Invalid password'
+            else:
+                error = 'Invalid username'
+        else: 
+            error = 'Invalid username'
+    return render_template('login.html', error=error)
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('You were logged out')
+    return redirect(url_for('show_products'))
 
 def setup_logging(loglevel):
     logformat = "%(asctime)s: %(message)s"
