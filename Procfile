@@ -1,1 +1,1 @@
-web: gunicorn hipflask_media_project.wsgi -w 4 --log-level DEBUG
+web: gunicorn 'amazone:app'
