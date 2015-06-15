@@ -44,6 +44,10 @@
       </div>
 
       <div class="row">
+        {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+      </div>
+
+      <div class="row">
 
         <div class="col-sm-8 blog-main">
   
@@ -55,6 +59,20 @@
               <p>{{ post.content | safe }}</p>
             </div><!-- /.blog-post -->
           {% endfor %}
+
+          <div class="blog-post">
+            <h2 class="blog-post-title">Create a new post...</h2>
+            <p class="blog-post-meta">You can use HTML here to do fancy things!</p>
+            <form action="{{ url_for('home') }}" method=post>
+              <dl>
+                <dt>Title:
+                <dd><input type=text name=title>
+                <dt>Content:
+                <dd><textarea name=content class="content"></textarea>
+                <dd><input type=submit value=Create class="create">
+              </dl>
+            </form>
+          </div><!-- /.blog-post -->
 
           <nav>
             <ul class="pager">
@@ -96,14 +114,6 @@
               <li><a href="#">June 2013</a></li>
               <li><a href="#">May 2013</a></li>
               <li><a href="#">April 2013</a></li>
-            </ol>
-          </div>
-          <div class="sidebar-module">
-            <h4>Elsewhere</h4>
-            <ol class="list-unstyled">
-              <li><a href="#">GitHub</a></li>
-              <li><a href="#">Twitter</a></li>
-              <li><a href="#">Facebook</a></li>
             </ol>
           </div>
         </div><!-- /.blog-sidebar -->

