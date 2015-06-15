@@ -20,7 +20,7 @@ def setup_logging(loglevel):
         logging.basicConfig(level=logging.INFO,format=logformat)
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description='Start a the flask server of the amazone project.')
+    parser = argparse.ArgumentParser(description='Start a the flask server of the linked out project.')
     parser.add_argument('-d','--debug', action='store_true', help='Enable debugging')
     parser.add_argument("-v", "--verbose", action='store_true', help="Increase output verbosity")
 
