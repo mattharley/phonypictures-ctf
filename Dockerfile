@@ -15,15 +15,14 @@ RUN /etc/init.d/ssh start
 
 # install pip/python
 RUN mkdir -p /usr/src/app
-RUN apt-get -y --force-yes install ncurses-dev python2.7-dev 
-RUN apt-get -y --force-yes install python-pip
+RUN apt-get -y --force-yes install ncurses-dev python2.7-dev python-pip
 
 WORKDIR /usr/src/app
 COPY . /usr/src/app
 RUN pip install -r requirements.txt
 
 RUN start_capture.sh &
-RUN start_intranet.sh
+CMD start_intranet.sh
 
 EXPOSE 22/tcp
 EXPOSE 7000/tcp
