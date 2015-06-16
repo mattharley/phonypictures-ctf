@@ -19,12 +19,11 @@ RUN apt-get -y --force-yes install ncurses-dev python2.7-dev
 
 WORKDIR /usr/src/app
 COPY . /usr/src/app
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
-# ftp server
-RUN apt-get -y --force-yes install vsftpd
-RUN restart vsftpd
+RUN start_capture.sh &
+RUN start_intranet.sh
 
-EXPOSE 80/tcp
-EXPOSE 21/tcp
 EXPOSE 22/tcp
+EXPOSE 7000/tcp
+EXPOSE 8000/tcp
