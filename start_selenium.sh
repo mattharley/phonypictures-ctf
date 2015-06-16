@@ -1,5 +1,5 @@
 #!/bin/sh
-sudo Xvfb :10 -ac
+sudo Xvfb :10 -ac &
 export DISPLAY=:10
 firefox &
 
