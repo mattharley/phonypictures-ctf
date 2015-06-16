@@ -1,3 +1,5 @@
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -16,4 +18,6 @@ def login_as_boss():
     submit.click()
 
 if __name__ == '__main__':
-    login_as_boss()
+    while 1:
+        login_as_boss()
+        time.sleep(60)
