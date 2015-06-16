@@ -23,4 +23,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 22/tcp
 EXPOSE 5000/tcp
-EXPOSE 6000/tcp
+EXPOSE 5001/tcp
