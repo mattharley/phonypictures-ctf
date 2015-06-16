@@ -22,5 +22,5 @@ COPY . /usr/src/app
 RUN pip install -r requirements.txt
 
 EXPOSE 22/tcp
-EXPOSE 7000/tcp
-EXPOSE 8000/tcp
+EXPOSE 5000/tcp
+EXPOSE 6000/tcp
