@@ -21,9 +21,6 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app
 RUN pip install -r requirements.txt
 
-RUN ./start_capture.sh &
-CMD ./start_intranet.sh
-
 EXPOSE 22/tcp
 EXPOSE 7000/tcp
 EXPOSE 8000/tcp
