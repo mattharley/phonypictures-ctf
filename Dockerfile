@@ -16,7 +16,7 @@ RUN /etc/init.d/ssh start
 # install pip/python
 RUN mkdir -p /usr/src/app
 RUN apt-get -y --force-yes install ncurses-dev python2.7-dev 
-RUN apt-get -y --force-yes python-pip
+RUN apt-get -y --force-yes install python-pip
 
 WORKDIR /usr/src/app
 COPY . /usr/src/app
