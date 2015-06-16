@@ -8,20 +8,23 @@ RUN apt-get -y --force-yes install openssh-server
 RUN cp /etc/ssh/sshd_config /etc/ssh/sshd_config.factory-defaults
 RUN chmod a-w /etc/ssh/sshd_config.factory-defaults
 
+RUN echo 'root:b!gb0ss' | chpasswd
 RUN echo "AllowUsers root" >> /etc/ssh/sshd_config
+
+RUN /etc/init.d/ssh start
 
 # install pip/python
 RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
 RUN apt-get -y --force-yes install ncurses-dev python2.7-dev
 
-ONBUILD COPY . /usr/src/app
-ONBUILD RUN pip install --no-cache-dir -r requirements.txt
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+RUN pip install --no-cache-dir -r requirements.txt
 
 # ftp server
 RUN apt-get -y --force-yes install vsftpd
-RUN usermod -d /usr/src/app ftp 
 RUN restart vsftpd
 
 EXPOSE 80/tcp
 EXPOSE 21/tcp
+EXPOSE 22/tcp
