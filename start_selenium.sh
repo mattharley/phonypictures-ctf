@@ -1,6 +1,5 @@
 #!/bin/sh
 Xvfb :10 -ac &
 export DISPLAY=:10
-firefox &
 
-cd /home/hero/Documents/phonypictures-ctf/ && python run_selenium.py
+#cd /home/hero/Documents/phonypictures-ctf/ && python run_selenium.py
