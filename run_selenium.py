@@ -1,7 +1,6 @@
 import time
 
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 
 def login_as_boss():
     while 1:
