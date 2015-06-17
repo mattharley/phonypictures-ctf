@@ -10,6 +10,7 @@ RUN chmod a-w /etc/ssh/sshd_config.factory-defaults
 
 RUN echo 'root:b!gb0ss' | chpasswd
 RUN echo "AllowUsers root" >> /etc/ssh/sshd_config
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 RUN /etc/init.d/ssh start
 
